@@ -20,7 +20,7 @@ public class JavaDayDemoApplication extends Application {
 	private static final long serialVersionUID = -152735180021558969L;
 
 	// Tile size in pixels
-	protected static final int TILE_SIZE = 20;
+	protected static final int TILE_SIZE = 30;
 
 	// Playfield width in tiles
 	private static final int PLAYFIELD_W = 10;
@@ -116,7 +116,7 @@ public class JavaDayDemoApplication extends Application {
 					private static final long serialVersionUID = 1L;
 
 					public void buttonClick(ClickEvent event) {
-						game.rotateCW();
+						game.rotateCCW();
 						drawGameState();
 					}
 				}));
@@ -141,7 +141,7 @@ public class JavaDayDemoApplication extends Application {
 		canvas.setWidth((TILE_SIZE * PLAYFIELD_W) + "px");
 		canvas.setHeight((TILE_SIZE * PLAYFIELD_H) + "px");
 		canvas.setBackgroundColor(PLAYFIELD_COLOR);
-
+		
 		// Label for score
 		scoreLabel = new Label("");
 		win.addComponent(scoreLabel);
