@@ -43,15 +43,9 @@ public class JavaDayDemoApplication extends Application {
 		win = new Window("Vaadin Tetris");
 		setMainWindow(win);
 
-		// Layout for buttons
-		HorizontalLayout buttons = new HorizontalLayout();
-		buttons.setMargin(true);
-		buttons.setSpacing(true);
-		win.addComponent(buttons);
-
-		// Button for restarting
+		// Button for restarting the game
 		final Button restartBtn;
-		buttons.addComponent(restartBtn = new Button("start",
+		win.addComponent(restartBtn = new Button("start",
 				new Button.ClickListener() {
 					private static final long serialVersionUID = 1L;
 
@@ -69,6 +63,12 @@ public class JavaDayDemoApplication extends Application {
 					}
 				}));
 		restartBtn.setClickShortcut(KeyCode.ESCAPE);
+
+		// Layout for control buttons
+		HorizontalLayout buttons = new HorizontalLayout();
+		buttons.setMargin(false);
+		buttons.setSpacing(true);
+		win.addComponent(buttons);
 
 		// Button for moving left
 		final Button leftBtn;
