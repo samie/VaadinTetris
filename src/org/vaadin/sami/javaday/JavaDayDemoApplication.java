@@ -3,7 +3,7 @@ package org.vaadin.sami.javaday;
 import org.vaadin.hezamu.canvas.Canvas;
 import org.vaadin.sami.tetris.Game;
 import org.vaadin.sami.tetris.Grid;
-import org.vaadin.sami.tetris.Tetrimino;
+import org.vaadin.sami.tetris.Tetromino;
 
 import com.vaadin.Application;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -219,7 +219,7 @@ public class JavaDayDemoApplication extends Application {
 				int tile = state.get(x, y);
 				if (tile > 0) {
 
-					String color = Tetrimino.get(tile).getColor();
+					String color = Tetromino.get(tile).getColor();
 					canvas.setFillStyle(color);
 					canvas.fillRect(x * TILE_SIZE + 1, y * TILE_SIZE + 1,
 							TILE_SIZE - 2, TILE_SIZE - 2);

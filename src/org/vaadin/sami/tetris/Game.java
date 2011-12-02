@@ -17,14 +17,14 @@ public class Game {
 	private int score;
 	private boolean gameOver;
 
-	private Tetrimino activeTetrimino;
+	private Tetromino activeTetrimino;
 	private int pos_x, pos_y;
 
 	public Game(int w, int h) {
 		playfield = new Grid(w, h);
 		score = 0;
 		gameOver = false;
-		activeTetrimino = Tetrimino.getRandom();
+		activeTetrimino = Tetromino.getRandom();
 		pos_y = 0;
 		pos_x = (w - activeTetrimino.getWidth()) / 2;
 		clear();
@@ -59,7 +59,7 @@ public class Game {
 					score += 10;
 				}
 
-			activeTetrimino = Tetrimino.getRandom();
+			activeTetrimino = Tetromino.getRandom();
 			pos_y = 0;
 			pos_x = (playfield.getWidth() - activeTetrimino.getWidth()) / 2;
 			if (!playfield.fitsInto(activeTetrimino, pos_x, pos_y))
@@ -106,14 +106,14 @@ public class Game {
 	}
 
 	public void rotateCW() {
-		Tetrimino test = new Tetrimino(activeTetrimino);
+		Tetromino test = new Tetromino(activeTetrimino);
 		test.rotateCW();
 		if (playfield.fitsInto(test, pos_x, pos_y))
 			activeTetrimino = test;
 	}
 
 	public void rotateCCW() {
-		Tetrimino test = new Tetrimino(activeTetrimino);
+		Tetromino test = new Tetromino(activeTetrimino);
 		test.rotateCCW();
 		if (playfield.fitsInto(test, pos_x, pos_y))
 			activeTetrimino = test;
