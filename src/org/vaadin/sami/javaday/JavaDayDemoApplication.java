@@ -211,7 +211,7 @@ public class JavaDayDemoApplication extends Application {
 		canvas.fillRect(0, 0, game.getWidth() * TILE_SIZE + 2, game.getHeight()
 				* TILE_SIZE + 2);
 
-		// Draw the tetriminoes
+		// Draw the tetrominoes
 		Grid state = game.getCurrentState();
 		for (int x = 0; x < state.getWidth(); x++) {
 			for (int y = 0; y < state.getHeight(); y++) {
