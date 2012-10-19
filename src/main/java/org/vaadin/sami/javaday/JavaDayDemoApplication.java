@@ -43,6 +43,20 @@ public class JavaDayDemoApplication extends Application {
 		win = new Window("Vaadin Tetris");
 		setMainWindow(win);
 
+		win.addComponent(new Label(
+				"<h1>Serverside Tetris - using plain web technologies</h1>"
+						+ "This is a demo application that "
+						+ "proves server side java can work for even "
+						+ "interactive games. Game code runs in server side using "
+						+ "<a href='http://vaadin.com/'>Vaadin</a>, constantly open " +
+						"communication channel is provided"
+						+ " by <a href='http://vaadin.com/directory#addon/dontpush-ozonelayer'>DontPush OzoneLayer</a> " +
+						"and graphics are drawn with <a href='http://vaadin.com/directory#addon/canvaswidget'>Canvas addon"
+						+ " widget</a>. Note that the communication is not even optimized "
+						+ "anyhow. With e.g. SVG and based solution the amount of "
+						+ "transfered data would be much smaller. Still the game is playable, even over mobile GSM network.",
+				Label.CONTENT_XHTML));
+
 		// Button for restarting the game
 		final Button restartBtn;
 		win.addComponent(restartBtn = new Button("start",
@@ -141,7 +155,7 @@ public class JavaDayDemoApplication extends Application {
 		canvas.setWidth((TILE_SIZE * PLAYFIELD_W) + "px");
 		canvas.setHeight((TILE_SIZE * PLAYFIELD_H) + "px");
 		canvas.setBackgroundColor(PLAYFIELD_COLOR);
-		
+
 		// Label for score
 		scoreLabel = new Label("");
 		win.addComponent(scoreLabel);
