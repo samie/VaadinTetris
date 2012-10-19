@@ -1,4 +1,6 @@
 /.project
 /.settings
 /.classpath
-/WebContent/VAADIN/widgetsets
+target
+
+src/main/webapp/VAADIN
