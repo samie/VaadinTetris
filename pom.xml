@@ -84,7 +84,7 @@
 					<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets
 					</hostedWebapp>
 					<noServer>true</noServer>
-					<draftCompile>true</draftCompile>
+					<draftCompile>false</draftCompile>
 					<style>OBF</style>
 				</configuration>
 				<executions>
