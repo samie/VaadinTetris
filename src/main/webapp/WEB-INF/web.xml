@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>JavaDayDemo</display-name>
+	<context-param>
+		<description>
+		Vaadin production mode</description>
+		<param-name>productionMode</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<servlet>
+		<description>AtmosphereServlet</description>
+		<servlet-name>AtmosphereServlet</servlet-name>
+		<servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+		<init-param>
+			<!-- prevent deadlocks -->
+			<param-name>org.atmosphere.disableOnStateEvent</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<!--Uncomment if you want to use Servlet 3.0 Async Support -->
+		<async-supported>true</async-supported>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Javadaydemo Application</servlet-name>
+		<servlet-class>org.vaadin.dontpush.server.DontPushOzoneServlet</servlet-class>
+		<!-- <servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class> -->
+		<init-param>
+			<description>
+			Vaadin application class to start</description>
+			<param-name>application</param-name>
+			<param-value>org.vaadin.sami.javaday.JavaDayDemoApplication</param-value>
+		</init-param>
+		<init-param>
+			<description>
+			Application widgetset</description>
+			<param-name>widgetset</param-name>
+			<param-value>org.vaadin.sami.javaday.widgetset.JavadaydemoWidgetset</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AtmosphereServlet</servlet-name>
+		<url-pattern>/UIDL/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Javadaydemo Application</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+</web-app>
