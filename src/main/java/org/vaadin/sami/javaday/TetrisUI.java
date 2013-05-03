@@ -5,15 +5,22 @@ import org.vaadin.sami.tetris.Game;
 import org.vaadin.sami.tetris.Grid;
 import org.vaadin.sami.tetris.Tetromino;
 
-import com.vaadin.Application;
+import com.vaadin.annotations.Push;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 
-public class JavaDayDemoApplication extends Application {
+@Push
+public class TetrisUI extends UI {
 
 	private static final int PAUSE_TIME_MS = 500;
 
@@ -31,7 +38,7 @@ public class JavaDayDemoApplication extends Application {
 	// Playfield background color
 	private static final String PLAYFIELD_COLOR = "#000";
 
-	private Window win;
+	private VerticalLayout layout;
 	private Canvas canvas;
 	protected boolean running;
 	protected Game game;
@@ -39,27 +46,29 @@ public class JavaDayDemoApplication extends Application {
 	private Label scoreLabel;
 
 	@Override
-	public void init() {
-		win = new Window("Vaadin Tetris");
-		setMainWindow(win);
+	protected void init(VaadinRequest request) {
+		Page.getCurrent().setTitle("Vaadin Tetris");
+		layout = new VerticalLayout();
+		layout.setSpacing(true);
+		layout.setMargin(true);
+		setContent(layout);
 
-		win.addComponent(new Label(
+		layout.addComponent(new Label(
 				"<h1>Serverside Tetris - using plain web technologies</h1>"
 						+ "This is a demo application that "
 						+ "proves server side java can work for even "
 						+ "interactive games. Game code runs in server side using "
-						+ "<a href='http://vaadin.com/'>Vaadin</a>, constantly open " +
-						"communication channel is provided"
-						+ " by <a href='http://vaadin.com/directory#addon/dontpush-ozonelayer'>DontPush OzoneLayer</a> " +
-						"and graphics are drawn with <a href='http://vaadin.com/directory#addon/canvaswidget'>Canvas addon"
+						+ "<a href='http://vaadin.com/'>Vaadin</a>, constantly open "
+						+ "communication channel is provided Vaadin 7.1 Push"
+						+ "and graphics are drawn with <a href='http://vaadin.com/directory#addon/canvas'>Canvas addon"
 						+ " widget</a>. Note that the communication is not even optimized "
 						+ "anyhow. With e.g. SVG and based solution the amount of "
 						+ "transfered data would be much smaller. Still the game is playable, even over mobile GSM network.",
-				Label.CONTENT_XHTML));
+				ContentMode.HTML));
 
 		// Button for restarting the game
 		final Button restartBtn;
-		win.addComponent(restartBtn = new Button("start",
+		layout.addComponent(restartBtn = new Button("start",
 				new Button.ClickListener() {
 					private static final long serialVersionUID = 1L;
 
@@ -82,7 +91,7 @@ public class JavaDayDemoApplication extends Application {
 		HorizontalLayout buttons = new HorizontalLayout();
 		buttons.setMargin(false);
 		buttons.setSpacing(true);
-		win.addComponent(buttons);
+		layout.addComponent(buttons);
 
 		// Button for moving left
 		final Button leftBtn;
@@ -151,14 +160,14 @@ public class JavaDayDemoApplication extends Application {
 
 		// Canvas for the game
 		canvas = new Canvas();
-		win.addComponent(canvas);
+		layout.addComponent(canvas);
 		canvas.setWidth((TILE_SIZE * PLAYFIELD_W) + "px");
 		canvas.setHeight((TILE_SIZE * PLAYFIELD_H) + "px");
-		canvas.setBackgroundColor(PLAYFIELD_COLOR);
+		// canvas.setBackgroundColor(PLAYFIELD_COLOR);
 
 		// Label for score
 		scoreLabel = new Label("");
-		win.addComponent(scoreLabel);
+		layout.addComponent(scoreLabel);
 
 	}
 
@@ -174,7 +183,13 @@ public class JavaDayDemoApplication extends Application {
 				while (running && !game.isOver()) {
 
 					// Draw the state
-					drawGameState();
+					access(new Runnable() {
+						
+						@Override
+						public void run() {
+							drawGameState();
+						}
+					});
 
 					// Pause for a while
 					try {
@@ -189,7 +204,13 @@ public class JavaDayDemoApplication extends Application {
 				}
 
 				// Notify user that game is over
-				gameOver();
+				access(new Runnable() {
+					
+					@Override
+					public void run() {
+						gameOver();
+					}
+				});
 			}
 		};
 		t.start();
@@ -201,7 +222,13 @@ public class JavaDayDemoApplication extends Application {
 	 * 
 	 */
 	protected synchronized void updateScore() {
-		scoreLabel.setValue("Score: " + game.getScore());
+		access(new Runnable() {
+			
+			@Override
+			public void run() {
+				scoreLabel.setValue("Score: " + game.getScore());
+			}
+		});
 	}
 
 	/**
@@ -210,7 +237,8 @@ public class JavaDayDemoApplication extends Application {
 	 */
 	protected synchronized void gameOver() {
 		running = false;
-		win.showNotification("Game Over", "Your score: " + game.getScore());
+		Notification.show("Game Over", "Your score: " + game.getScore(),
+				Type.HUMANIZED_MESSAGE);
 	}
 
 	/**
@@ -220,7 +248,7 @@ public class JavaDayDemoApplication extends Application {
 	protected synchronized void drawGameState() {
 
 		// Reset and clear canvas
-		canvas.reset();
+		canvas.clear();
 		canvas.setFillStyle(PLAYFIELD_COLOR);
 		canvas.fillRect(0, 0, game.getWidth() * TILE_SIZE + 2, game.getHeight()
 				* TILE_SIZE + 2);
@@ -242,4 +270,5 @@ public class JavaDayDemoApplication extends Application {
 			}
 		}
 	}
+
 }

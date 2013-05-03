@@ -6,14 +6,12 @@
 	<artifactId>tetris</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Tetris with Vaadin, Canvas and Dontpush (WebSocket comm)</name>
+	<name>Tetris with Vaadin, Canvas (WebSocket comm)</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>6.8-SNAPSHOT</vaadin.version>
-		<jpacontainer.version>2.0.0</jpacontainer.version>
-		<gwt.version>2.4.0</gwt.version>
-		<gwt.plugin.version>2.4.0</gwt.plugin.version>
+		<vaadin.version>7.1-SNAPSHOT</vaadin.version>
+		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -31,32 +29,49 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>vaadin-snapshots</id>
+			<url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin</artifactId>
+			<artifactId>vaadin-server</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-themes</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-push</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
-			<artifactId>canvaswidget</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>2.4.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.vaadin</groupId>
-			<artifactId>dontpush-addon-ozonelayer</artifactId>
-			<version>1.0.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-incubator</artifactId>
-			<version>2.0.1</version>
+			<artifactId>canvas</artifactId>
+			<version>2.0</version>
 		</dependency>
 
 	</dependencies>
@@ -72,30 +87,6 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<!-- Uncomment to enable widgetset compilation -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<version>${gwt.plugin.version}</version>
-				<configuration>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets
-					</webappDirectory>
-					<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets
-					</hostedWebapp>
-					<noServer>true</noServer>
-					<draftCompile>false</draftCompile>
-					<style>OBF</style>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>resources</goal>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>2.4.1</version>
@@ -110,11 +101,35 @@
 			<plugin>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
-				<version>1.0.2</version>
+				<version>${vaadin.plugin.version}</version>
+				<configuration>
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<!-- <runTarget>mobilemail</runTarget> -->
+					<!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This 
+						way compatible with Vaadin eclipse plugin. -->
+					<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets
+					</webappDirectory>
+					<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets
+					</hostedWebapp>
+					<noServer>true</noServer>
+					<!-- Remove draftCompile when project is ready -->
+					<draftCompile>false</draftCompile>
+					<compileReport>true</compileReport>
+					<style>OBF</style>
+					<strict>true</strict>
+					<runTarget>http://localhost:8080/</runTarget>
+				</configuration>
 				<executions>
 					<execution>
+						<configuration>
+							<!-- if you don't specify any modules, the plugin will find them -->
+							<!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module> 
+								</modules> -->
+						</configuration>
 						<goals>
+							<goal>resources</goal>
 							<goal>update-widgetset</goal>
+							<goal>compile</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -143,12 +158,12 @@
 											vaadin-maven-plugin
 										</artifactId>
 										<versionRange>
-											[1.0.2,)
+											[7.0.5,)
 										</versionRange>
 										<goals>
-											<goal>
-												update-widgetset
-											</goal>
+											<goal>resources</goal>
+											<goal>update-widgetset</goal>
+											<goal>compile</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

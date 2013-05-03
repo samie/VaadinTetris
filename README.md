@@ -6,7 +6,7 @@ This is the source code for a Vaadin based Tetris game. It was originally presen
 
 The code is a bit cleaned up and commented for better readability and adds keyboard support for game control.
 
-This implementation uses Vaadin 6.7.2 together with CanvasWidget for rendering and DontPush OzoneLayer for websocket based communication. The used add-ons are still experimental 
+This implementation uses Vaadin 7.1 together with Canvas add-on for rendering and Vaadin push for websocket based communication. The used add-ons are still experimental 
 implementations and may not work with all server-browser combinations. 
 
 The Tetris game engine tries to follow the guidelines given at  http://tetris.wikia.com/
