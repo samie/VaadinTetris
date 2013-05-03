@@ -9,47 +9,21 @@
 		<param-name>productionMode</param-name>
 		<param-value>false</param-value>
 	</context-param>
-
 	<servlet>
-		<description>AtmosphereServlet</description>
-		<servlet-name>AtmosphereServlet</servlet-name>
-		<servlet-class>org.atmosphere.cpr.AtmosphereServlet</servlet-class>
+		<servlet-name>Tetris</servlet-name>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
-			<!-- prevent deadlocks -->
-			<param-name>org.atmosphere.disableOnStateEvent</param-name>
-			<param-value>true</param-value>
+			<param-name>ui</param-name>
+			<param-value>org.vaadin.sami.javaday.TetrisUI</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
-		<!--Uncomment if you want to use Servlet 3.0 Async Support -->
+		<init-param>
+			<param-name>widgetset</param-name>
+			<param-value>org.vaadin.sami.javaday.widgetset.TetrisWidgetset</param-value>
+		</init-param>
 		<async-supported>true</async-supported>
 	</servlet>
-
-	<servlet>
-		<servlet-name>Javadaydemo Application</servlet-name>
-		<servlet-class>org.vaadin.dontpush.server.DontPushOzoneServlet</servlet-class>
-		<!-- <servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class> -->
-		<init-param>
-			<description>
-			Vaadin application class to start</description>
-			<param-name>application</param-name>
-			<param-value>org.vaadin.sami.javaday.JavaDayDemoApplication</param-value>
-		</init-param>
-		<init-param>
-			<description>
-			Application widgetset</description>
-			<param-name>widgetset</param-name>
-			<param-value>org.vaadin.sami.javaday.widgetset.JavadaydemoWidgetset</param-value>
-		</init-param>
-	</servlet>
-
 	<servlet-mapping>
-		<servlet-name>AtmosphereServlet</servlet-name>
-		<url-pattern>/UIDL/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Javadaydemo Application</servlet-name>
+		<servlet-name>Tetris</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
-	
 </web-app>
