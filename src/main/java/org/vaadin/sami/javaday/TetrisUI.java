@@ -6,10 +6,14 @@ import org.vaadin.sami.tetris.Grid;
 import org.vaadin.sami.tetris.Tetromino;
 
 import com.vaadin.annotations.Push;
+import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
@@ -18,8 +22,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import javax.servlet.annotation.WebServlet;
 
-@Push
+@Push(transport = Transport.LONG_POLLING)
+@Theme("valo")
 public class TetrisUI extends UI {
 
 	private static final int PAUSE_TIME_MS = 500;
@@ -270,5 +276,10 @@ public class TetrisUI extends UI {
 			}
 		}
 	}
+    
+    @WebServlet(urlPatterns = "/*", asyncSupported = true)
+    @VaadinServletConfiguration(ui = TetrisUI.class, productionMode = false)
+    public static class MyUIServlet extends VaadinServlet {
+    }
 
 }
