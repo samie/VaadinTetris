@@ -1,13 +1,9 @@
-Vaadin Tetris
-=============
+#Vaadin Tetris
 
-This is the source code for a Vaadin based Tetris game. It was originally presented during my talk "Vaadin and HTML5" in JavaDay Riga, November 2011.
-![Screenshot](https://github.com/samie/JavaDayRiga2011/raw/60f157a842f8473f45f5436c1890da1aafc73779/vaadin-tetris-javadayriga2011.png)
+This is the source code for a Vaadin based Tetris game. It was originally presented during a talk by Sami Ekblad in "Vaadin and HTML5" in JavaDay Riga, November 2011.
+![Screenshot](https://github.com/github/mstahv/VaadinTetris/blob/master/vaadin-tetris.png)
 
-The code is a bit cleaned up and commented for better readability and adds keyboard support for game control.
-
-This implementation uses Vaadin 7.1 together with Canvas add-on for rendering and Vaadin push for websocket based communication. The used add-ons are still experimental 
-implementations and may not work with all server-browser combinations. 
+The code has since been slightly modified to use the official Vaadin Push (in version 7.1) and new Valo theme and some build in icons.
 
 The Tetris game engine tries to follow the guidelines given at  http://tetris.wikia.com/
 
