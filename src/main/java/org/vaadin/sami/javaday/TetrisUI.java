@@ -7,15 +7,14 @@ import org.vaadin.sami.tetris.Tetromino;
 
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
+
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.Page;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
@@ -23,6 +22,10 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import javax.servlet.annotation.WebServlet;
 
+import org.vaadin.viritin.button.PrimaryButton;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
+
+@Title("Vaadin Tetris")
 @Push
 @Theme("valo")
 public class TetrisUI extends UI {
@@ -57,116 +60,75 @@ public class TetrisUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        Page.getCurrent().setTitle("Vaadin Tetris");
         layout = new VerticalLayout();
         layout.setSpacing(true);
         layout.setMargin(true);
         setContent(layout);
 
-        layout.addComponent(new Label(
-                "<h1>Serverside Tetris - using plain web technologies</h1>"
-                + "This is a demo application that "
-                + "proves server side java can work for even "
-                + "interactive games. Game code runs in server side using "
-                + "<a href='http://vaadin.com/'>Vaadin</a>, constantly open "
-                + "communication channel is provided Vaadin 7.1 Push"
-                + "and graphics are drawn with <a href='http://vaadin.com/directory#addon/canvas'>Canvas addon"
-                + " widget</a>. Note that the communication is not even optimized "
-                + "anyhow. With e.g. SVG and based solution the amount of "
-                + "transfered data would be much smaller. Still the game is playable, even over mobile GSM network.",
-                ContentMode.HTML));
-
-        // Button for restarting the game
-        final Button restartBtn;
-        layout.addComponent(restartBtn = new Button("start",
-                new Button.ClickListener() {
-                    private static final long serialVersionUID = 1L;
-
-                    public void buttonClick(ClickEvent event) {
-                        running = !running;
-                        if (running) {
-                            game = new Game(10, 20);
-                            startGameThread();
-                            event.getButton().setCaption("stop");
-                        } else {
-                            event.getButton().setCaption("start");
-                            gameOver();
-                        }
-
-                    }
-                }));
-        restartBtn.setClickShortcut(KeyCode.ESCAPE);
-
-        // Layout for control buttons
-        HorizontalLayout buttons = new HorizontalLayout();
-        buttons.setMargin(false);
-        buttons.setSpacing(true);
-        layout.addComponent(buttons);
+        layout.addComponent(new About());
 
         // Button for moving left
-        final Button leftBtn;
-        buttons.addComponent(leftBtn = new Button("left",
-                new Button.ClickListener() {
-                    private static final long serialVersionUID = 1L;
-
-                    public void buttonClick(ClickEvent event) {
-                        game.moveLeft();
-                        drawGameState();
-                    }
-                }));
+        final Button leftBtn = new Button(FontAwesome.ARROW_LEFT);
+        leftBtn.addClickListener(e -> {
+            game.moveLeft();
+            drawGameState();
+        });
         leftBtn.setClickShortcut(KeyCode.ARROW_LEFT);
 
         // Button for moving right
-        final Button rightBtn;
-        buttons.addComponent(rightBtn = new Button("right",
-                new Button.ClickListener() {
-                    private static final long serialVersionUID = 1L;
+        final Button rightBtn = new Button(FontAwesome.ARROW_RIGHT);
+        rightBtn.addClickListener(e -> {
+            game.moveRight();
+            drawGameState();
 
-                    public void buttonClick(ClickEvent event) {
-                        game.moveRight();
-                        drawGameState();
-                    }
-                }));
+        });
         rightBtn.setClickShortcut(KeyCode.ARROW_RIGHT);
 
         // Button for rotating clockwise
-        final Button rotateCWBtn;
-        buttons.addComponent(rotateCWBtn = new Button("cw",
-                new Button.ClickListener() {
-                    private static final long serialVersionUID = 1L;
-
-                    public void buttonClick(ClickEvent event) {
-                        game.rotateCW();
-                        drawGameState();
-                    }
-                }));
+        final Button rotateCWBtn = new Button("[key down]",
+                FontAwesome.ROTATE_RIGHT);
+        rotateCWBtn.addClickListener(e -> {
+            game.rotateCW();
+            drawGameState();
+        });
         rotateCWBtn.setClickShortcut(KeyCode.ARROW_DOWN);
 
         // Button for rotating counter clockwise
-        final Button rotateCCWBtn;
-        buttons.addComponent(rotateCCWBtn = new Button("ccw",
-                new Button.ClickListener() {
-                    private static final long serialVersionUID = 1L;
-
-                    public void buttonClick(ClickEvent event) {
-                        game.rotateCCW();
-                        drawGameState();
-                    }
-                }));
+        final Button rotateCCWBtn = new Button("[key up]",
+                FontAwesome.ROTATE_LEFT);
+        rotateCCWBtn.addClickListener(e -> {
+            game.rotateCCW();
+            drawGameState();
+        });
         rotateCCWBtn.setClickShortcut(KeyCode.ARROW_UP);
 
         // Button for dropping the piece
-        final Button dropBtn;
-        buttons.addComponent(dropBtn = new Button("drop",
-                new Button.ClickListener() {
-                    private static final long serialVersionUID = 1L;
-
-                    public void buttonClick(ClickEvent event) {
-                        game.drop();
-                        drawGameState();
-                    }
-                }));
+        final Button dropBtn = new Button("[space]", FontAwesome.ARROW_DOWN);
+        dropBtn.addClickListener(e -> {
+            game.drop();
+            drawGameState();
+        });
         dropBtn.setClickShortcut(KeyCode.SPACEBAR);
+
+        // Button for restarting the game
+        final Button restartBtn = new PrimaryButton().withIcon(FontAwesome.PLAY);
+        restartBtn.addClickListener(e -> {
+            running = !running;
+            if (running) {
+                game = new Game(10, 20);
+                startGameThread();
+                restartBtn.setIcon(FontAwesome.STOP);
+                dropBtn.focus();
+            } else {
+                restartBtn.setIcon(FontAwesome.PLAY);
+                gameOver();
+            }
+        });
+
+        layout.addComponent(new MHorizontalLayout(
+                restartBtn, leftBtn, rightBtn, rotateCCWBtn, rotateCWBtn,
+                dropBtn
+        ));
 
         // Canvas for the game
         canvas = new Canvas();
@@ -208,6 +170,7 @@ public class TetrisUI extends UI {
 
                 // Notify user that game is over
                 gameOver();
+
             }
         };
         t.start();
@@ -219,12 +182,8 @@ public class TetrisUI extends UI {
      *
      */
     protected synchronized void updateScore() {
-        access(new Runnable() {
-
-            @Override
-            public void run() {
-                scoreLabel.setValue("Score: " + game.getScore());
-            }
+        access(() -> {
+            scoreLabel.setValue("Score: " + game.getScore());
         });
     }
 
@@ -235,13 +194,9 @@ public class TetrisUI extends UI {
     protected synchronized void gameOver() {
         running = false;
         // Draw the state
-        access(new Runnable() {
-
-            @Override
-            public void run() {
-                Notification.show("Game Over", "Your score: " + game.getScore(),
-                        Type.HUMANIZED_MESSAGE);
-            }
+        access(() -> {
+            Notification.show("Game Over", "Your score: " + game.getScore(),
+                    Type.HUMANIZED_MESSAGE);
         });
     }
 
@@ -252,30 +207,26 @@ public class TetrisUI extends UI {
     protected synchronized void drawGameState() {
 
         // Draw the state
-        access(new Runnable() {
+        access(() -> {
 
-            @Override
-            public void run() {
+            // Reset and clear canvas
+            canvas.clear();
+            canvas.setFillStyle(PLAYFIELD_COLOR);
+            canvas.fillRect(0, 0, game.getWidth() * TILE_SIZE + 2, game.getHeight()
+                    * TILE_SIZE + 2);
 
-                // Reset and clear canvas
-                canvas.clear();
-                canvas.setFillStyle(PLAYFIELD_COLOR);
-                canvas.fillRect(0, 0, game.getWidth() * TILE_SIZE + 2, game.getHeight()
-                        * TILE_SIZE + 2);
+            // Draw the tetrominoes
+            Grid state = game.getCurrentState();
+            for (int x = 0; x < state.getWidth(); x++) {
+                for (int y = 0; y < state.getHeight(); y++) {
 
-                // Draw the tetrominoes
-                Grid state = game.getCurrentState();
-                for (int x = 0; x < state.getWidth(); x++) {
-                    for (int y = 0; y < state.getHeight(); y++) {
+                    int tile = state.get(x, y);
+                    if (tile > 0) {
 
-                        int tile = state.get(x, y);
-                        if (tile > 0) {
-
-                            String color = Tetromino.get(tile).getColor();
-                            canvas.setFillStyle(color);
-                            canvas.fillRect(x * TILE_SIZE + 1, y * TILE_SIZE + 1,
-                                    TILE_SIZE - 2, TILE_SIZE - 2);
-                        }
+                        String color = Tetromino.get(tile).getColor();
+                        canvas.setFillStyle(color);
+                        canvas.fillRect(x * TILE_SIZE + 1, y * TILE_SIZE + 1,
+                                TILE_SIZE - 2, TILE_SIZE - 2);
                     }
                 }
             }
