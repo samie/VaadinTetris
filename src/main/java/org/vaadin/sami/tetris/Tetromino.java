@@ -13,7 +13,7 @@ public class Tetromino extends Grid {
 
 	private static String LABELS = "IJLOSTZ";
 
-	private static String COLORS[] = new String[] { "#0ff", "#00f", "ffa500",
+	private static String COLORS[] = new String[] { "#0ff", "#00f", "#ffa500",
 			"#ff0", "#0f0", "#800080", "#f00" };
 
 	private static Tetromino[] ALL = new Tetromino[7];
