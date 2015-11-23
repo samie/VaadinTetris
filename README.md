@@ -10,6 +10,7 @@ The code has since been slightly modified to use the official Vaadin Push (in ve
     git clone https://github.com/samie/VaadinTetris.git
     cd VaadinTetris
     mvn jetty:run
+    open http://localhost:8888/
 
 The Tetris game engine tries to follow the guidelines given at  http://tetris.wikia.com/
 
