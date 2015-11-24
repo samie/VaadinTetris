@@ -6,8 +6,7 @@ interactive games. Game code runs in servlet engine and the UI is built using
 WebSocket communication if it suits for both client and server (and proxies), 
 else falls back to long polling, or streaming. 
 
-Graphics are drawn with brutally
-redrawn by the [Canvas addon](http://vaadin.com/directory#addon/canvas) - on 
+Graphics are drawn with the [Canvas addon](http://vaadin.com/directory#addon/canvas) - on 
 each and every game state change. This naturally causes lots of traffic
 traffic, but this could be really easily optimized. E.g. SVG and based 
 solution or just simple html table based solution the amount of transfered data
