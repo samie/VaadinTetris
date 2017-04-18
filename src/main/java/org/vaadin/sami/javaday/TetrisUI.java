@@ -1,5 +1,6 @@
 package org.vaadin.sami.javaday;
 
+import com.vaadin.icons.VaadinIcons;
 import org.vaadin.hezamu.canvas.Canvas;
 import org.vaadin.sami.tetris.Game;
 import org.vaadin.sami.tetris.Grid;
@@ -11,7 +12,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
@@ -25,9 +25,9 @@ import javax.servlet.annotation.WebServlet;
 import org.vaadin.viritin.button.PrimaryButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
-@Title("Vaadin Tetris")
 @Push
 @Theme("valo")
+@Title("Vaadin Tetris")
 public class TetrisUI extends UI {
 
     @WebServlet(value = {"/*"}, asyncSupported = true)
@@ -68,7 +68,7 @@ public class TetrisUI extends UI {
         layout.addComponent(new About());
 
         // Button for moving left
-        final Button leftBtn = new Button(FontAwesome.ARROW_LEFT);
+        final Button leftBtn = new Button(VaadinIcons.ARROW_LEFT);
         leftBtn.addClickListener(e -> {
             game.moveLeft();
             drawGameState();
@@ -76,7 +76,7 @@ public class TetrisUI extends UI {
         leftBtn.setClickShortcut(KeyCode.ARROW_LEFT);
 
         // Button for moving right
-        final Button rightBtn = new Button(FontAwesome.ARROW_RIGHT);
+        final Button rightBtn = new Button(VaadinIcons.ARROW_RIGHT);
         rightBtn.addClickListener(e -> {
             game.moveRight();
             drawGameState();
@@ -86,7 +86,7 @@ public class TetrisUI extends UI {
 
         // Button for rotating clockwise
         final Button rotateCWBtn = new Button("[key down]",
-                FontAwesome.ROTATE_RIGHT);
+                VaadinIcons.ROTATE_RIGHT);
         rotateCWBtn.addClickListener(e -> {
             game.rotateCW();
             drawGameState();
@@ -95,7 +95,7 @@ public class TetrisUI extends UI {
 
         // Button for rotating counter clockwise
         final Button rotateCCWBtn = new Button("[key up]",
-                FontAwesome.ROTATE_LEFT);
+                VaadinIcons.ROTATE_LEFT);
         rotateCCWBtn.addClickListener(e -> {
             game.rotateCCW();
             drawGameState();
@@ -103,7 +103,7 @@ public class TetrisUI extends UI {
         rotateCCWBtn.setClickShortcut(KeyCode.ARROW_UP);
 
         // Button for dropping the piece
-        final Button dropBtn = new Button("[space]", FontAwesome.ARROW_DOWN);
+        final Button dropBtn = new Button("[space]", VaadinIcons.ARROW_DOWN);
         dropBtn.addClickListener(e -> {
             game.drop();
             drawGameState();
@@ -111,16 +111,16 @@ public class TetrisUI extends UI {
         dropBtn.setClickShortcut(KeyCode.SPACEBAR);
 
         // Button for restarting the game
-        final Button restartBtn = new PrimaryButton().withIcon(FontAwesome.PLAY);
+        final Button restartBtn = new PrimaryButton().withIcon(VaadinIcons.PLAY);
         restartBtn.addClickListener(e -> {
             running = !running;
             if (running) {
                 game = new Game(10, 20);
                 startGameThread();
-                restartBtn.setIcon(FontAwesome.STOP);
+                restartBtn.setIcon(VaadinIcons.STOP);
                 dropBtn.focus();
             } else {
-                restartBtn.setIcon(FontAwesome.PLAY);
+                restartBtn.setIcon(VaadinIcons.PLAY);
                 gameOver();
             }
         });
