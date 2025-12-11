@@ -163,59 +163,16 @@ VaadinTetris demonstrates a hybrid architecture where the game logic runs server
 ### Why This Architecture?
 
 This demonstrates Vaadin's flexibility:
-- Game logic benefits from Java's strong typing and testability
+- Game logic benefits from Java's strong typing and security
 - Rendering benefits from client-side performance
 - WebSocket Push ensures real-time state synchronization
-- Lit web components provide modern, standards-based UI components
-
-## Deployment
-
-### Production Build
-
-```bash
-mvn clean package -Pproduction
-```
-
-The production build:
-- Optimizes and minifies frontend bundle
-- Generates service worker for PWA
-- Creates offline-capable application
-- Produces WAR file at `target/tetris-2.0-SNAPSHOT.war`
-
-### Deploy to Application Server
-
-Deploy the WAR file to any Jakarta EE 10+ compatible container:
-- **Tomcat 10+** (Jakarta EE)
-- **Jetty 11+** (Jakarta EE)
-- **WildFly 27+**
-- **Payara 6+**
-- **Any Jakarta EE 10 application server**
-
-**Note:** Vaadin 25 requires Jakarta EE (not javax). Ensure your server supports `jakarta.servlet` packages.
-
-### Docker Deployment
-
-```bash
-# Build the WAR
-mvn clean package -Pproduction
-
-# Create Dockerfile
-cat > Dockerfile << EOF
-FROM tomcat:10-jdk21
-COPY target/tetris-2.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
-EXPOSE 8080
-EOF
-
-# Build and run
-docker build -t vaadin-tetris .
-docker run -p 8080:8080 vaadin-tetris
-```
+- Lit web components provide modern, standards-based UI custom elements
 
 ### Progressive Web App (PWA)
 
 The application can be installed as a PWA on supported devices:
 1. Open http://localhost:8080/ in Chrome/Edge/Safari
-2. Click the install button in the address bar
+2. Click the install or share button in the address bar
 3. The app will install like a native application
 4. Works offline (displays offline page when disconnected)
 
@@ -228,21 +185,6 @@ Vaadin 25 supports hot reload for both backend and frontend:
 - **Java changes:** Automatically recompiled and reloaded
 - **TypeScript/Lit changes:** Hot module replacement (HMR) via Vite
 - **CSS changes:** Instant updates without page reload
-
-### Frontend Development
-
-The frontend uses modern tooling:
-
-```bash
-# Frontend files are in src/main/frontend/
-# Vite dev server runs automatically with mvn jetty:run
-
-# TypeScript compilation
-npm run build
-
-# Type checking
-npm run check
-```
 
 ### Custom Web Components
 
@@ -273,14 +215,7 @@ This project has evolved significantly over the years:
 - **2011** - Original version presented at JavaDay Riga, November 2011
 - **2013** - Updated to use official Vaadin Push (version 7.1) and Valo theme
 - **2024** - Updated to Vaadin 8.14.1 with code quality improvements
-- **2025** - **Major upgrade to Vaadin 25.0.0-rc1**
-    - Migrated from Vaadin 8 to Vaadin 25 architecture
-    - Replaced server-side Canvas with Lit web component
-    - Added TypeScript/Vite frontend build
-    - Implemented PWA support with offline capability
-    - Added favicon support with multiple sizes
-    - Upgraded to Java 21 and Jetty 12
-    - Modern React Router-based client-side routing
+- **2025** - **Major upgrade to Vaadin 25**
 
 The game engine follows the guidelines provided at https://tetris.fandom.com/wiki/Tetris
 
