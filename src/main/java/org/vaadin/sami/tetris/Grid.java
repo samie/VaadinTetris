@@ -9,34 +9,34 @@ package org.vaadin.sami.tetris;
 public class Grid {
 
 	private static final int EMPTY_VALUE = 0;
-	private int grid[][];
-	private int grid_w, grid_h;
+	private int[][] grid;
+	private int gridW, gridH;
 
 	public Grid(int w, int h) {
-		grid_w = w;
-		grid_h = h;
-		grid = new int[grid_w][grid_h];
+		gridW = w;
+		gridH = h;
+		grid = new int[gridW][gridH];
 	}
 
 	public Grid(Grid g) {
-		grid_w = g.grid_w;
-		grid_h = g.grid_h;
-		grid = new int[grid_w][grid_h];
-		for (int x = 0; x < grid_w; x++)
-			for (int y = 0; y < grid_h; y++)
+		gridW = g.gridW;
+		gridH = g.gridH;
+		grid = new int[gridW][gridH];
+		for (int x = 0; x < gridW; x++)
+			for (int y = 0; y < gridH; y++)
 				grid[x][y] = g.grid[x][y];
 	}
 
 	public Grid(int[][] data) {
-		grid_h = data.length;
-		grid_w = data[0].length;
+		gridH = data.length;
+		gridW = data[0].length;
 		grid = data;
 	}
 
 	public void fill(int px, int py, int w, int h, int value) {
 		for (int x = 0; x < w; x++) {
 			for (int y = 0; y < h; y++) {
-				if ((px + x < grid_w) && (py + y < grid_h) && (px + x >= 0)
+				if ((px + x < gridW) && (py + y < gridH) && (px + x >= 0)
 						&& (py + y >= 0)) {
 					grid[px + x][py + y] = value;
 				}
@@ -45,65 +45,65 @@ public class Grid {
 	}
 
 	public void rotateCW() {
-		int rotated[][] = new int[grid_h][grid_w];
-		int s = grid_h - 1;
-		for (int i = 0; i < grid_h; i++) {
-			for (int j = 0; j < grid_w; j++) {
+		int rotated[][] = new int[gridH][gridW];
+		int s = gridH - 1;
+		for (int i = 0; i < gridH; i++) {
+			for (int j = 0; j < gridW; j++) {
 				rotated[i][j] = grid[j][s - i];
 			}
 		}
 		grid = rotated;
-		int tmp = grid_w;
-		grid_w = grid_h;
-		grid_h = tmp;
+		int tmp = gridW;
+		gridW = gridH;
+		gridH = tmp;
 	}
 
 	public void rotateCCW() {
-		int rotated[][] = new int[grid_h][grid_w];
+		int rotated[][] = new int[gridH][gridW];
 
-		int s = grid_w - 1;
-		for (int i = 0; i < grid_h; i++) {
-			for (int j = 0; j < grid_w; j++) {
+		int s = gridW - 1;
+		for (int i = 0; i < gridH; i++) {
+			for (int j = 0; j < gridW; j++) {
 				rotated[i][j] = grid[s - j][i];
 			}
 		}
 
 		grid = rotated;
-		int tmp = grid_w;
-		grid_w = grid_h;
-		grid_h = tmp;
+		int tmp = gridW;
+		gridW = gridH;
+		gridH = tmp;
 	}
 
 	public int getWidth() {
-		return grid_w;
+		return gridW;
 	}
 
 	public int getHeight() {
-		return grid_h;
+		return gridH;
 	}
 
 	public void copy(Grid other, int px, int py) {
 
-		int max_x = other.grid_w;
-		if (other.grid_w + px > grid_w)
-			max_x = grid_w - px;
+		int max_x = other.gridW;
+		if (other.gridW + px > gridW)
+			max_x = gridW - px;
 
-		int max_y = other.grid_h;
-		if (max_y + py > grid_h)
-			max_y = grid_h - py;
+		int max_y = other.gridH;
+		if (max_y + py > gridH)
+			max_y = gridH - py;
 
 		for (int x = 0; x < max_x; x++)
 			for (int y = 0; y < max_y; y++)
-				if ((px + x < grid_w) && (py + y < grid_h) && (px + x >= 0)
+				if ((px + x < gridW) && (py + y < gridH) && (px + x >= 0)
 						&& (py + y >= 0) && other.grid[x][y] != EMPTY_VALUE)
 					grid[px + x][py + y] = other.grid[x][y];
 	}
 
 	public boolean fitsInto(Grid other, int px, int py) {
 
-		for (int x = 0; x < other.grid_w; x++)
-			for (int y = 0; y < other.grid_h; y++) {
-				if ((px + x < grid_w) && (py + y < grid_h) && (px + x >= 0)
+		for (int x = 0; x < other.gridW; x++)
+			for (int y = 0; y < other.gridH; y++) {
+				if ((px + x < gridW) && (py + y < gridH) && (px + x >= 0)
 						&& (py + y >= 0)) {
 					if (grid[px + x][py + y] != EMPTY_VALUE
 							&& other.grid[x][y] != EMPTY_VALUE) {
