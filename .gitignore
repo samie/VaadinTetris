@@ -5,3 +5,5 @@ target
 
 src/main/webapp/VAADIN
 .idea
+src/main/frontend/generated
+src/main/frontend/index.html

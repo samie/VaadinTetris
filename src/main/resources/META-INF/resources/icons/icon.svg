@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#000000" rx="64"/>
+
+  <!-- T-shaped Tetromino (iconic Tetris piece) -->
+  <!-- Top row: 3 blocks -->
+  <rect x="64" y="128" width="112" height="112" fill="#A020F0" stroke="#8010C0" stroke-width="8"/>
+  <rect x="192" y="128" width="112" height="112" fill="#A020F0" stroke="#8010C0" stroke-width="8"/>
+  <rect x="320" y="128" width="112" height="112" fill="#A020F0" stroke="#8010C0" stroke-width="8"/>
+
+  <!-- Bottom row: 1 block (center) -->
+  <rect x="192" y="256" width="112" height="112" fill="#A020F0" stroke="#8010C0" stroke-width="8"/>
+
+  <!-- Highlight effect on blocks for 3D look -->
+  <rect x="72" y="136" width="96" height="32" fill="#C040FF" opacity="0.5"/>
+  <rect x="200" y="136" width="96" height="32" fill="#C040FF" opacity="0.5"/>
+  <rect x="328" y="136" width="96" height="32" fill="#C040FF" opacity="0.5"/>
+  <rect x="200" y="264" width="96" height="32" fill="#C040FF" opacity="0.5"/>
+</svg>
