@@ -1,7 +1,7 @@
 package org.vaadin.sami.tetris;
 
 /**
- * Tetis game class.
+ * Tetris game class.
  * 
  * This class implements the game control and bookkeeping methods.
  * 
