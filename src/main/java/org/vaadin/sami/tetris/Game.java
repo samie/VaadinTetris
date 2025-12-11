@@ -18,15 +18,15 @@ public class Game {
 	private boolean gameOver;
 
 	private Tetromino activeTetrimino;
-	private int pos_x, pos_y;
+	private int posX, posY;
 
 	public Game(int w, int h) {
 		playfield = new Grid(w, h);
 		score = 0;
 		gameOver = false;
 		activeTetrimino = Tetromino.getRandom();
-		pos_y = 0;
-		pos_x = (w - activeTetrimino.getWidth()) / 2;
+		posY = 0;
+		posX = (w - activeTetrimino.getWidth()) / 2;
 		clear();
 	}
 
@@ -44,28 +44,28 @@ public class Game {
 
 	public Grid getCurrentState() {
 		Grid state = new Grid(playfield);
-		state.copy(activeTetrimino, pos_x, pos_y);
+		state.copy(activeTetrimino, posX, posY);
 		return state;
 	}
 
 	public boolean step() {
-		if (!playfield.fitsInto(activeTetrimino, pos_x, pos_y + 1)) {
+		if (!playfield.fitsInto(activeTetrimino, posX, posY + 1)) {
 
-			playfield.copy(activeTetrimino, pos_x, pos_y);
+			playfield.copy(activeTetrimino, posX, posY);
 
 			for (int j = playfield.getHeight() - 1; j >= 0; j--)
-				while (isFullLine(j) == true) {
+				while (isFullLine(j)) {
 					clearLine(j);
 					score += 10;
 				}
 
 			activeTetrimino = Tetromino.getRandom();
-			pos_y = 0;
-			pos_x = (playfield.getWidth() - activeTetrimino.getWidth()) / 2;
-			if (!playfield.fitsInto(activeTetrimino, pos_x, pos_y))
+			posY = 0;
+			posX = (playfield.getWidth() - activeTetrimino.getWidth()) / 2;
+			if (!playfield.fitsInto(activeTetrimino, posX, posY))
 				this.gameOver = true;
 		} else {
-			pos_y++;
+			posY++;
 		}
 		return gameOver;
 	}
@@ -94,34 +94,34 @@ public class Game {
 	}
 
 	public void moveLeft() {
-		if (!playfield.fitsInto(activeTetrimino, pos_x - 1, pos_y))
+		if (!playfield.fitsInto(activeTetrimino, posX - 1, posY))
 			return;
-		pos_x--;
+		posX--;
 	}
 
 	public void moveRight() {
-		if (!playfield.fitsInto(activeTetrimino, pos_x + 1, pos_y))
+		if (!playfield.fitsInto(activeTetrimino, posX + 1, posY))
 			return;
-		pos_x++;
+		posX++;
 	}
 
 	public void rotateCW() {
 		Tetromino test = new Tetromino(activeTetrimino);
 		test.rotateCW();
-		if (playfield.fitsInto(test, pos_x, pos_y))
+		if (playfield.fitsInto(test, posX, posY))
 			activeTetrimino = test;
 	}
 
 	public void rotateCCW() {
 		Tetromino test = new Tetromino(activeTetrimino);
 		test.rotateCCW();
-		if (playfield.fitsInto(test, pos_x, pos_y))
+		if (playfield.fitsInto(test, posX, posY))
 			activeTetrimino = test;
 	}
 
 	public void drop() {
-		while (playfield.fitsInto(activeTetrimino, pos_x, pos_y + 1))
-			pos_y++;
+		while (playfield.fitsInto(activeTetrimino, posX, posY + 1))
+			posY++;
 	}
 
 }
