@@ -13,7 +13,7 @@ public class Tetromino extends Grid {
 
 	private static String LABELS = "IJLOSTZ";
 
-	private static String COLORS[] = new String[] { "#0ff", "#00f", "#ffa500",
+	private static String[] COLORS = new String[] { "#0ff", "#00f", "#ffa500",
 			"#ff0", "#0f0", "#800080", "#f00" };
 
 	private static Tetromino[] ALL = new Tetromino[7];
@@ -22,51 +22,57 @@ public class Tetromino extends Grid {
 
 		// 'I'
 		int index = 0;
-		Grid g = new Grid(new int[][] { 
+		Grid g = new Grid(new int[][] {
 				new int[] { 0, 1, 0, 0 },
-				new int[] { 0, 1, 0, 0 }, 
+				new int[] { 0, 1, 0, 0 },
 				new int[] { 0, 1, 0, 0 },
 				new int[] { 0, 1, 0, 0 } });
-		ALL[index++] = new Tetromino(g, COLORS[index], 'I', index);
+		ALL[index] = new Tetromino(g, COLORS[index], 'I', index);
 
 		// 'J'
-		g = new Grid(new int[][] { 
+		index++;
+		g = new Grid(new int[][] {
 				new int[] { 2, 2, 0 },
-				new int[] { 0, 2, 0 }, 
+				new int[] { 0, 2, 0 },
 				new int[] { 0, 2, 0 } });
-		ALL[index++] = new Tetromino(g, COLORS[index], 'J', index);
+		ALL[index] = new Tetromino(g, COLORS[index], 'J', index);
 
 		// 'L'
+		index++;
 		g = new Grid(new int[][] {
 				new int[] { 0, 3, 0 },
-				new int[] { 0, 3, 0 }, 
+				new int[] { 0, 3, 0 },
 				new int[] { 3, 3, 0 } });
-		ALL[index++] = new Tetromino(g, COLORS[index], 'L', index);
+		ALL[index] = new Tetromino(g, COLORS[index], 'L', index);
 
 		// 'O'
-		g = new Grid(new int[][] { 
-				new int[] { 4, 4 }, 
+		index++;
+		g = new Grid(new int[][] {
+				new int[] { 4, 4 },
 				new int[] { 4, 4 } });
-		ALL[index++] = new Tetromino(g, COLORS[index], 'O', index);
+		ALL[index] = new Tetromino(g, COLORS[index], 'O', index);
 
 		// 'S'
-		g = new Grid(new int[][] { 
+		index++;
+		g = new Grid(new int[][] {
 				new int[] { 0, 5, 0 },
-				new int[] { 5, 5, 0 }, 
+				new int[] { 5, 5, 0 },
 				new int[] { 5, 0, 0 } });
-		ALL[index++] = new Tetromino(g, COLORS[index], 'S', index);
+		ALL[index] = new Tetromino(g, COLORS[index], 'S', index);
 
 		// 'T'
-		g = new Grid(new int[][] { 
+		index++;
+		g = new Grid(new int[][] {
 				new int[] { 0, 6, 0 },
-				new int[] { 6, 6, 0 }, 
+				new int[] { 6, 6, 0 },
 				new int[] { 0, 6, 0 } });
-		ALL[index++] = new Tetromino(g, COLORS[index], 'T', index);
+		ALL[index] = new Tetromino(g, COLORS[index], 'T', index);
 
 		// 'Z'
-		g = new Grid(new int[][] { 
+		index++;
+		g = new Grid(new int[][] {
 				new int[] { 7, 0, 0 },
-				new int[] { 7, 7, 0 }, 
+				new int[] { 7, 7, 0 },
 				new int[] { 0, 7, 0 } });
 		ALL[index] = new Tetromino(g, COLORS[index], 'Z', index);
 
