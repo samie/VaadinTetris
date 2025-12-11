@@ -2,21 +2,20 @@ package org.vaadin.sami.tetris;
 
 /**
  * Tetriminoes class.
- * 
  * Based on the Tetris Guidelines at
- * http://tetris.wikia.com/wiki/Tetris_Guideline.
- * 
+ * <a href="https://tetris.fandom.com/wiki/Tetris_Guideline">tetris.fandom.com/wiki/Tetris_Guideline</a>.
+ *
  * @author Sami Ekblad / Vaadin
- * 
+ *
  */
 public class Tetromino extends Grid {
 
-	private static String LABELS = "IJLOSTZ";
+	private static final String LABELS = "IJLOSTZ";
 
-	private static String[] COLORS = new String[] { "#0ff", "#00f", "#ffa500",
+	private static final String[] COLORS = new String[] { "#0ff", "#00f", "#ffa500",
 			"#ff0", "#0f0", "#800080", "#f00" };
 
-	private static Tetromino[] ALL = new Tetromino[7];
+	private static final Tetromino[] ALL = new Tetromino[7];
 
 	static {
 
@@ -78,9 +77,9 @@ public class Tetromino extends Grid {
 
 	}
 
-	private int index;
-	private char label;
-	private String color;
+	private final int index;
+	private final char label;
+	private final String color;
 
 	private Tetromino(Grid g, String color, char letter, int index) {
 		super(g);
@@ -92,7 +91,7 @@ public class Tetromino extends Grid {
 	/**
 	 * Create a copy of another Tetrimino.
 	 * 
-	 * @param other
+	 * @param other the other Tetrimino to copy.
 	 */
 	public Tetromino(Tetromino other) {
 		super(other);
@@ -115,7 +114,7 @@ public class Tetromino extends Grid {
 		return get(LABELS.indexOf(letter));
 	}
 
-	/** Get a random tetrimino */
+	/** Get a random Tetromino. */
 	public static Tetromino getRandom() {
 		return ALL[(int) (Math.random() * 7.0)];
 	}
