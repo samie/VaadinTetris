@@ -1,13 +1,12 @@
 package org.vaadin.sami.components;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.dependency.NpmPackage;
+import com.vaadin.flow.component.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Server-side Java wrapper for the Tetris Canvas Lit component.
@@ -16,49 +15,16 @@ import java.util.stream.Collectors;
  * This component batches drawing commands and sends them to the client-side
  * Lit component for efficient rendering.
  */
-@Tag("tetris-canvas")
-@JsModule("./tetris-canvas/tetris-canvas.ts")
-@NpmPackage(value = "lit", version = "3.1.0")
-public class TetrisCanvas extends Component {
+@Tag("canvas")
+public class TetrisCanvas extends Component implements HasSize {
 
-    private int width;
-    private int height;
     private List<DrawCommand> commandBuffer = new ArrayList<>();
     private boolean batchMode = false;
 
     /**
      * Drawing command wrapper for JSON serialization
      */
-    private static class DrawCommand {
-        String type;
-        Object[] params;
-
-        DrawCommand(String type, Object... params) {
-            this.type = type;
-            this.params = params;
-        }
-
-        String toJson() {
-            StringBuilder json = new StringBuilder();
-            json.append("{\"type\":\"").append(type).append("\"");
-
-            if (params != null && params.length > 0) {
-                json.append(",\"params\":[");
-                for (int i = 0; i < params.length; i++) {
-                    if (i > 0) json.append(",");
-                    Object param = params[i];
-                    if (param instanceof String) {
-                        json.append("\"").append(param).append("\"");
-                    } else {
-                        json.append(param);
-                    }
-                }
-                json.append("]");
-            }
-
-            json.append("}");
-            return json.toString();
-        }
+    record  DrawCommand(String command, Object[] params) {
     }
 
     /**
@@ -67,17 +33,23 @@ public class TetrisCanvas extends Component {
      * @param height Canvas height in pixels
      */
     public TetrisCanvas(int width, int height) {
-        this.width = width;
-        this.height = height;
-        getElement().setProperty("canvasWidth", width);
-        getElement().setProperty("canvasHeight", height);
+        setSize(width, height);
+
+        getStyle().setBorder("1px solid var(--lumo-contrast-30pct, #ccc)");
+        getStyle().setBackgroundColor("#000");
+
+        getElement().executeJs("""
+              this.ctx = this.getContext('2d');
+              this.ctx.fillStyle = '#000';
+              this.ctx.fillRect(0, 0, this.width, this.height);
+            """);
     }
 
     /**
      * Clear the entire canvas
      */
     public void clear() {
-        addCommand("clear");
+        addCommand("this.ctx.clearRect(0, 0, this.width, this.height)");
     }
 
     /**
@@ -85,7 +57,7 @@ public class TetrisCanvas extends Component {
      * @param color CSS color string (e.g., "#FF0000" or "rgb(255, 0, 0)")
      */
     public void setFillStyle(String color) {
-        addCommand("setFillStyle", color);
+        addCommand("this.ctx.fillStyle = $0", color);
     }
 
     /**
@@ -96,7 +68,7 @@ public class TetrisCanvas extends Component {
      * @param height Rectangle height
      */
     public void fillRect(double x, double y, double width, double height) {
-        addCommand("fillRect", x, y, width, height);
+        addCommand("this.ctx.fillRect($0, $1, $2, $3)", x, y, width, height);
     }
 
     /**
@@ -107,7 +79,7 @@ public class TetrisCanvas extends Component {
     public void beginBatch() {
         batchMode = true;
         commandBuffer.clear();
-        addCommand("beginFrame");
+        addCommand("this.ctx.save()");
     }
 
     /**
@@ -116,7 +88,7 @@ public class TetrisCanvas extends Component {
      */
     public void endBatch() {
         if (batchMode) {
-            addCommand("endFrame");
+            addCommand("this.ctx.restore()");
             flushCommands();
             batchMode = false;
         }
@@ -132,8 +104,7 @@ public class TetrisCanvas extends Component {
             commandBuffer.add(cmd);
         } else {
             // Immediate execution (single command)
-            String jsonArray = "[" + cmd.toJson() + "]";
-            getElement().executeJs("this.executeCommands($0)", jsonArray);
+            getElement().executeJs(type, params);
         }
     }
 
@@ -145,30 +116,10 @@ public class TetrisCanvas extends Component {
             return;
         }
 
-        String jsonArray = "[" +
-            commandBuffer.stream()
-                .map(DrawCommand::toJson)
-                .collect(Collectors.joining(",")) +
-            "]";
-
-        getElement().executeJs("this.executeCommands(JSON.parse($0))", jsonArray);
+        commandBuffer.forEach(action -> {
+            getElement().executeJs(action.command, action.params);
+        });
         commandBuffer.clear();
-    }
-
-    /**
-     * Get canvas width
-     * @return Width in pixels
-     */
-    public int getCanvasWidth() {
-        return width;
-    }
-
-    /**
-     * Get canvas height
-     * @return Height in pixels
-     */
-    public int getCanvasHeight() {
-        return height;
     }
 
     /**
@@ -177,9 +128,9 @@ public class TetrisCanvas extends Component {
      * @param height New height in pixels
      */
     public void setSize(int width, int height) {
-        this.width = width;
-        this.height = height;
-        getElement().setProperty("canvasWidth", width);
-        getElement().setProperty("canvasHeight", height);
+        setWidth(width, Unit.PIXELS);
+        setHeight(height, Unit.PIXELS);
+
+        getElement().executeJs("this.width = $0; this.height = $1", width, height);
     }
 }
