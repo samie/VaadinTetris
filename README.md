@@ -11,7 +11,7 @@ A server-side Tetris game built with Vaadin, demonstrating that Java can handle 
 - **Modern web components** - Custom Lit-based canvas component for rendering
 - **Official Tetris guidelines** - Follows game rules from https://tetris.fandom.com/wiki/Tetris
 - **Progressive Web App (PWA)** - Installable as a native-like application
-- **Vaadin 25 ** - Latest Vaadin Java architecture with React Router
+- **Vaadin 25** - Latest Vaadin Java architecture with React Router
 
 ## Prerequisites
 
