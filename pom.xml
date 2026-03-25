@@ -9,7 +9,7 @@
     <name>Tetris with Vaadin, Canvas and WebSockets</name>
 
     <properties>
-        <vaadin.version>25.1.0-rc2</vaadin.version>
+        <vaadin.version>25.1.0</vaadin.version>
         <jetty.version>12.1.5</jetty.version>
         <jakarta.servlet.version>6.1.0</jakarta.servlet.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
